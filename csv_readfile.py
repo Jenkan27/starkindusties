@@ -23,6 +23,7 @@ def import_from_csv(file) -> None:
     with open(file, 'r') as file:
         csvreader = csv.DictReader(file, delimiter=',')
         with app.app_context():
+            count = 0
             for row in csvreader:
                 if row['Region'] != 'Region':
                     sale = Sale()
@@ -41,6 +42,10 @@ def import_from_csv(file) -> None:
                     sale.total_cost = float(row['Total Cost'])
                     sale.total_profit = float(row['Total Profit'])
                     db.session.add(sale)
+                count += 1
+                if count % 50000 == 0:
+                    timestamp = datetime.now()
+                    print(f'[{timestamp}]: {count} rows processed...')
             db.session.commit()
 
 if __name__ == '__main__':
