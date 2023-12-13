@@ -1,4 +1,8 @@
+# Playground file
 temp.py
+
+# 6MB Data file - Too Big
+5mSalesRecords.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
