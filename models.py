@@ -4,13 +4,18 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 class Sale(db.Model):
     STRING_LEN = 2000
+    REGION_LEN = 40
+    COUNTRY_LEN = 40
+    ITEM_TYPE_LEN = 20
+    SALES_CHANNEL_LEN = 7
+    ORDER_PRIORITY_LEN = 1
 
     __tablename__ = 'Sale'
-    region: Mapped[str] = mapped_column(db.String(STRING_LEN))
-    country: Mapped[str] = mapped_column(db.String(STRING_LEN))
-    item_type: Mapped[str] = mapped_column(db.String(STRING_LEN))
-    sales_channel: Mapped[str] = mapped_column(db.String(STRING_LEN))
-    order_priority: Mapped[str] = mapped_column(db.String(STRING_LEN))
+    region: Mapped[str] = mapped_column(db.String(REGION_LEN))
+    country: Mapped[str] = mapped_column(db.String(COUNTRY_LEN))
+    item_type: Mapped[str] = mapped_column(db.String(ITEM_TYPE_LEN))
+    sales_channel: Mapped[str] = mapped_column(db.String(SALES_CHANNEL_LEN))
+    order_priority: Mapped[str] = mapped_column(db.String(ORDER_PRIORITY_LEN))
     order_date: Mapped[date] = mapped_column(db.Date)
     order_id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
     ship_date: Mapped[date] = mapped_column(db.Date)
