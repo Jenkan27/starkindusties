@@ -20,47 +20,28 @@ def convert_american_to_date(american_date: str) -> date:
     return converted_date
 
 def import_from_csv(file) -> None:
-    list_from_file = []
-
     with open(file, 'r') as file:
-        csvreader = csv.reader(file)
-        
-        first_row = True
-        for row in csvreader:
-            if first_row:
-                row_title = []
-                for element in row:
-                    row_title.append(element)
-                first_row = False
-                continue
-            row_dict = {}
-            index = 0
-            
-            while index < len(row):
-                for element in row:
-                    row_dict[row_title[index]] = element
-                    index += 1
-            list_from_file.append(row_dict)
-
-    with app.app_context():
-        for line in list_from_file:
-            sale = Sale()
-            sale.region = line['Region']
-            sale.country = line['Country']
-            sale.item_type = line['Item Type']
-            sale.sales_channel = line['Sales Channel']
-            sale.order_priority = line['Order Priority']
-            sale.order_date = convert_american_to_date(line['Order Date'])
-            sale.order_id = int(line['Order ID'])
-            sale.ship_date = convert_american_to_date(line['Ship Date'])
-            sale.units_sold = int(line['Units Sold'])
-            sale.unit_price = float(line['Unit Price'])
-            sale.unit_cost = float(line['Unit Cost'])
-            sale.total_revenue = float(line['Total Revenue'])
-            sale.total_cost = float(line['Total Cost'])
-            sale.total_profit = float(line['Total Profit'])
-            db.session.add(sale)
-        db.session.commit()
+        csvreader = csv.DictReader(file, delimiter=',')
+        with app.app_context():
+            for row in csvreader:
+                if row['Region'] != 'Region':
+                    sale = Sale()
+                    sale.region = row['Region']
+                    sale.country = row['Country']
+                    sale.item_type = row['Item Type']
+                    sale.sales_channel = row['Sales Channel']
+                    sale.order_priority = row['Order Priority']
+                    sale.order_date = convert_american_to_date(row['Order Date'])
+                    sale.order_id = int(row['Order ID'])
+                    sale.ship_date = convert_american_to_date(row['Ship Date'])
+                    sale.units_sold = int(row['Units Sold'])
+                    sale.unit_price = float(row['Unit Price'])
+                    sale.unit_cost = float(row['Unit Cost'])
+                    sale.total_revenue = float(row['Total Revenue'])
+                    sale.total_cost = float(row['Total Cost'])
+                    sale.total_profit = float(row['Total Profit'])
+                    db.session.add(sale)
+            db.session.commit()
 
 if __name__ == '__main__':
     opt = input('Import 100 or 5m? ')
