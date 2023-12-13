@@ -24,4 +24,4 @@ with open("100SalesRecords.csv", 'r') as file:
         list_from_file.append(row_dict)
 
 for line in list_from_file:
-    
+    print ('hej')
