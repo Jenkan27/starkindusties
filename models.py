@@ -3,7 +3,6 @@ from datetime import date
 from sqlalchemy.orm import Mapped, mapped_column
 
 class Sale(db.Model):
-    STRING_LEN = 2000
     REGION_LEN = 40
     COUNTRY_LEN = 40
     ITEM_TYPE_LEN = 20
