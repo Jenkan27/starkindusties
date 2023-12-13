@@ -1,11 +1,5 @@
 from models import Sale
-from app import app, db 
-
-
-
-
-
-
+from app import app
 
 def get_rows(country: str,prio: str) -> list[Sale]:
     with app.app_context():
