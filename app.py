@@ -4,7 +4,7 @@ from sqlalchemy.orm import DeclarativeBase
 
 USER = 'root'
 PASS = 'password'
-DB_NAME = 'inl2'
+DB_NAME = 'StarkIndustries'
 
 app = Flask('__name__')
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+mysqlconnector://{USER}:{PASS}@localhost/{DB_NAME}'
