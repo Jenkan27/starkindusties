@@ -3,12 +3,14 @@ from datetime import date
 from sqlalchemy.orm import Mapped, mapped_column
 
 class Sale(db.Model):
+    STRING_LEN = 2000
+
     __tablename__ = 'Sale'
-    region: Mapped[str] = mapped_column(db.String(8000))
-    country: Mapped[str] = mapped_column(db.String(8000))
-    item_type: Mapped[str] = mapped_column(db.String(8000))
-    sales_channel: Mapped[str] = mapped_column(db.String(8000))
-    order_priority: Mapped[str] = mapped_column(db.String(8000))
+    region: Mapped[str] = mapped_column(db.String(STRING_LEN))
+    country: Mapped[str] = mapped_column(db.String(STRING_LEN))
+    item_type: Mapped[str] = mapped_column(db.String(STRING_LEN))
+    sales_channel: Mapped[str] = mapped_column(db.String(STRING_LEN))
+    order_priority: Mapped[str] = mapped_column(db.String(STRING_LEN))
     order_date: Mapped[date] = mapped_column(db.Date)
     order_id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
     ship_date: Mapped[date] = mapped_column(db.Date)
