@@ -1,4 +1,4 @@
-from app import db
+from app import app, db
 from datetime import date
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -18,3 +18,6 @@ class Sale(db.Model):
     total_revenue: Mapped[float] = mapped_column(db.Numeric(10,2))
     total_cost: Mapped[float] = mapped_column(db.Numeric(10,2))
     total_profit: Mapped[float] = mapped_column(db.Numeric(10,2))
+
+with app.app_context():
+    db.create_all()
