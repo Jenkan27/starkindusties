@@ -1,3 +1,4 @@
+from datetime import datetime
 from models import Sale
 from app import app
 
@@ -39,8 +40,11 @@ def print_results(data: list[Sale]) -> None:
 if __name__ == '__main__':
     country = input('Enter country: ')
     prio = input('Enter order priority: ')
+    start = datetime.now()
     data = get_rows(country, prio)
+    end = datetime.now()
     if data:
         print_results(data)
     else:
         print('No orders found.')
+    print(f'Query ran for {(end - start).total_seconds()} seconds')
