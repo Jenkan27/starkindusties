@@ -54,8 +54,7 @@ class DataBaseLoader:
                     print(f'Region "{region}" imported, {count:,} entries.')
                     print(f'{total_count:,} / {row_count:,} total entries imported.')
             print(f'Import completed. {row_count:,} entries added to database.')
-                    
-    
+
     def _create_sale(self, data: dict[str, str]) -> None:
         with self._app.app_context():
             sale = Sale()
