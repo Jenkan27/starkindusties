@@ -4,6 +4,7 @@ from datetime import date, datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from models import Sale
+from sqlalchemy import select
 
 
 class DataBaseLoader:
@@ -15,23 +16,45 @@ class DataBaseLoader:
         with open(csv_file, 'r') as file:
             csv_reader = csv.DictReader(file, delimiter=',')
             print(f'CSV file "{csv_file}" loaded.')
+            print('Counting entries...')
             row_count = 0
+            regions = []
             for row in csv_reader:
+                if row['Region'] not in regions:
+                    regions.append(row['Region'])
                 row_count += 1
-            print(f'Detecting {row_count} entries.')
-            file.seek(0)
-            if row_count <= 10000:
+            print(f'Detecting {row_count:,} entries.')
+            if row_count <= 5000:
+                file.seek(0)
+                print('Initiating full import to database.')
                 count = 0
                 for row in csv_reader:
                     if row['Region'] == 'Region':
                         continue
                     self._create_sale(row)
                     count += 1
-                    if count % 100 == 0:
+                    if count % 500 == 0:
                         timestamp = datetime.now()
-                        print(f'[{timestamp}]: {count} rows processed...')
+                        print(f'[{timestamp}]: {count:,} rows processed...')
             else:
-                print('File too big.')
+                print('Initiating partitioned import to database.')
+                total_count = 0
+                for region in regions:
+                    file.seek(0)
+                    print(f'Importing sales marked "{region}".')
+                    region_count = 0
+                    for row in csv_reader:
+                        if row['Region'] == region:
+                            self._create_sale(row)
+                            region_count += 1
+                            if region_count % 1000 == 0:
+                                timestamp = datetime.now()
+                                print(f'[{timestamp}]: {region_count} rows processed...')
+                    total_count += region_count
+                    print(f'Region "{region}" imported, {count:,} entries.')
+                    print(f'{total_count:,} / {row_count:,} total entries imported.')
+            print(f'Import completed. {row_count:,} entries added to database.')
+                    
     
     def _create_sale(self, data: dict[str, str]) -> None:
         with self._app.app_context():
